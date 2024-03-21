@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Fungsi untuk mengonversi nilai kartu ke dalam bentuk angka
+int card_value(char card) {
+    if (card >= '2' && card <= '9') {
+        return card - '0';
+    } else if (card == 'J') {
+        return 11;
+    } else if (card == 'Q') {
+        return 12;
+    } else if (card == 'K') {
+        return 13;
+    }
+    return -1; // Kartu tidak valid
+}
+
+// Fungsi untuk melakukan pertukaran posisi kartu
+void swap(char *a, char *b) {
+    char temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Fungsi untuk mengurutkan kartu menggunakan algoritma Bubble Sort
+int bubble_sort(char *cards, int n) {
+    int steps = 0;
+    int i, j;
+
+    for (i = 0; i < n; i++) {
+        int swapped = 0;
+        for (j = 0; j < n-i-1; j++) {
+            if (card_value(cards[j]) > card_value(cards[j+1])) {
+                swap(&cards[j], &cards[j+1]);
+                swapped = 1;
+                steps++;
+                printf("Pertukaran %d: %s\n", steps, cards);
+            }
+        }
+        if (!swapped) {
+            break;
+        }
+    }
+
+    return steps;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    char *cards = (char *)malloc(n * sizeof(char));
+    scanf(" %[^\n]", cards);
+
+    int steps = bubble_sort(cards, n);
+    printf("%d\n", steps);
+
+    free(cards);
+    return 0;
+}
